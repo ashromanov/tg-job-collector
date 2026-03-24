@@ -15,18 +15,27 @@ async def upload_cv(
     file: UploadFile = File(...),
     name: str = Form(...),
     match_threshold: int = Form(70),
+    cv_link: str | None = Form(None),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     file_bytes = await file.read()
+    filename = file.filename or ""
     try:
-        content_text = await parse_content(file_bytes, file.filename or "")
+        content_text = await parse_content(file_bytes, filename)
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e)
         )
     return await create_cv(
-        db, str(current_user.id), name, content_text, match_threshold
+        db,
+        str(current_user.id),
+        name,
+        content_text,
+        match_threshold,
+        file_bytes=file_bytes,
+        filename=filename,
+        cv_link=cv_link or None,
     )
 
 

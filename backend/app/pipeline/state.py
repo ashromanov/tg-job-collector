@@ -27,6 +27,8 @@ class CVData(BaseModel):
     name: str
     content_text: str
     match_threshold: int
+    cv_link: str | None = None
+    file_path: str | None = None
 
 
 class MatchResult(BaseModel):

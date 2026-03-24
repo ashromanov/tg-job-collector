@@ -5,16 +5,24 @@ export interface CV {
   name: string;
   match_threshold: number;
   active: boolean;
+  cv_link: string | null;
+  file_path: string | null;
   created_at: string;
 }
 
 export const listCVs = () => api.get<CV[]>("/cvs");
 
-export const uploadCV = (file: File, name: string, threshold: number) => {
+export const uploadCV = (
+  file: File,
+  name: string,
+  threshold: number,
+  cvLink?: string
+) => {
   const form = new FormData();
   form.append("file", file);
   form.append("name", name);
   form.append("match_threshold", String(threshold));
+  if (cvLink) form.append("cv_link", cvLink);
   return api.post<CV>("/cvs", form);
 };
 

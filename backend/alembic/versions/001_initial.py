@@ -170,6 +170,8 @@ def upgrade() -> None:
         sa.Column("content_text", sa.Text(), nullable=False),
         sa.Column("match_threshold", sa.Integer(), server_default=sa.text("70"), nullable=True),
         sa.Column("active", sa.Boolean(), server_default=sa.text("true"), nullable=True),
+        sa.Column("cv_link", sa.Text(), nullable=True),
+        sa.Column("file_path", sa.Text(), nullable=True),
         sa.Column(
             "created_at",
             sa.TIMESTAMP(timezone=True),

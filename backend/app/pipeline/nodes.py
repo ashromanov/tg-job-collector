@@ -58,6 +58,8 @@ async def load_cvs_node(state: PipelineState) -> PipelineState:
                 name=cv.name,
                 content_text=cv.content_text,
                 match_threshold=cv.match_threshold or 70,
+                cv_link=cv.cv_link,
+                file_path=cv.file_path,
             )
             for cv in cvs
         ]
@@ -165,9 +167,17 @@ async def outreach_node(state: PipelineState) -> PipelineState:
                     else str(message_text)
                 )
 
+                # Append CV link to message if provided
+                cv_data = next(
+                    (c for c in state["cvs"] if c.id == match_result.cv_id), None
+                )
+                if cv_data and cv_data.cv_link:
+                    message_str = f"{message_str}\n\nCV: {cv_data.cv_link}"
+
                 from app.collector.client import send_dm
 
-                await send_dm(tg_contact, message_str)
+                file_path = cv_data.file_path if cv_data else None
+                await send_dm(tg_contact, message_str, file_path=file_path)
 
                 log = OutreachLog(
                     match_id=await _get_match_id(

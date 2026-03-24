@@ -101,9 +101,6 @@ The collector service is isolated on an internal Docker network — it is never 
 The system works with any model available on [OpenRouter](https://openrouter.ai/models). Recommended starting points:
 
 - `openai/gpt-4o-mini` — fast and cheap, good extraction quality (default)
-- `anthropic/claude-3-haiku` — similar cost, strong reasoning
-- `openai/gpt-4o` — best quality, higher cost
-- `anthropic/claude-3-5-sonnet` — excellent for nuanced matching
 
 ## Production deployment
 

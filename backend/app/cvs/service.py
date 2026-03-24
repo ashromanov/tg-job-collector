@@ -1,10 +1,14 @@
 import io
+import os
+import uuid as uuid_lib
 
 from pypdf import PdfReader
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.cvs.models import CV
+
+UPLOADS_DIR = os.getenv("UPLOADS_DIR", "/app/uploads")
 
 
 async def parse_content(file_bytes: bytes, filename: str) -> str:
@@ -19,11 +23,37 @@ async def parse_content(file_bytes: bytes, filename: str) -> str:
     return file_bytes.decode("utf-8", errors="replace")
 
 
+def _save_file(cv_id: str, file_bytes: bytes, filename: str) -> str:
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+    ext = os.path.splitext(filename)[1].lower() or ".bin"
+    path = os.path.join(UPLOADS_DIR, f"{cv_id}{ext}")
+    with open(path, "wb") as f:
+        f.write(file_bytes)
+    return path
+
+
 async def create_cv(
-    db: AsyncSession, user_id: str, name: str, content_text: str, threshold: int
+    db: AsyncSession,
+    user_id: str,
+    name: str,
+    content_text: str,
+    threshold: int,
+    file_bytes: bytes | None = None,
+    filename: str = "",
+    cv_link: str | None = None,
 ) -> CV:
+    cv_id = str(uuid_lib.uuid4())
+    file_path: str | None = None
+    if file_bytes:
+        file_path = _save_file(cv_id, file_bytes, filename)
     cv = CV(
-        user_id=user_id, name=name, content_text=content_text, match_threshold=threshold
+        id=cv_id,
+        user_id=user_id,
+        name=name,
+        content_text=content_text,
+        match_threshold=threshold,
+        cv_link=cv_link,
+        file_path=file_path,
     )
     db.add(cv)
     await db.commit()

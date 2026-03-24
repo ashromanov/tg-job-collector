@@ -43,6 +43,7 @@ services:
       - backend
     volumes:
       - tg_session:/app/session
+      - cv_uploads:/app/uploads
     networks:
       - internal
     restart: unless-stopped

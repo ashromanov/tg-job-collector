@@ -88,6 +88,18 @@ export function StepCVs({ onNext }: Props) {
     }
   }
 
+  async function handleLinkChange(id: string, cv_link: string) {
+    setCvs((prev) => prev.map((c) => (c.id === id ? { ...c, cv_link } : c)));
+  }
+
+  async function handleLinkBlur(id: string, cv_link: string) {
+    try {
+      await updateCV(id, { cv_link: cv_link || null });
+    } catch {
+      setError("Failed to update CV link");
+    }
+  }
+
   if (loading) {
     return (
       <div className="text-center py-12 text-gray-400 text-sm">Loading...</div>
@@ -157,7 +169,7 @@ export function StepCVs({ onNext }: Props) {
                   <Trash2 size={16} />
                 </button>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 mb-3">
                 <label className="text-xs text-gray-500 w-28 shrink-0">
                   Match threshold: {cv.match_threshold}%
                 </label>
@@ -181,6 +193,24 @@ export function StepCVs({ onNext }: Props) {
                   }
                   className="w-14 border border-gray-300 rounded-md px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-gray-500 w-28 shrink-0">
+                  CV link
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/... (optional)"
+                  value={cv.cv_link ?? ""}
+                  onChange={(e) => handleLinkChange(cv.id, e.target.value)}
+                  onBlur={(e) => handleLinkBlur(cv.id, e.target.value)}
+                  className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {cv.file_path && (
+                  <span className="text-xs text-green-600 whitespace-nowrap">
+                    ✓ file saved
+                  </span>
+                )}
               </div>
             </div>
           ))}

@@ -26,4 +26,6 @@ class CV(Base):
         Integer, server_default=text("70")
     )
     active: Mapped[bool | None] = mapped_column(Boolean, server_default=text("true"))
+    cv_link: Mapped[str | None] = mapped_column(Text, nullable=True)
+    file_path: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime | None] = mapped_column(server_default=text("now()"))

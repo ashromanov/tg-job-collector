@@ -20,12 +20,12 @@ async def set_channel_monitored(tg_id: int, monitored: bool) -> None:
         resp.raise_for_status()
 
 
-async def send_dm(tg_contact: str, message: str) -> None:
+async def send_dm(tg_contact: str, message: str, file_path: str | None = None) -> None:
     async with httpx.AsyncClient() as client:
         resp = await client.post(
             f"{settings.collector_url}/send-dm",
-            json={"contact": tg_contact, "message": message},
-            timeout=15.0,
+            json={"contact": tg_contact, "message": message, "file_path": file_path},
+            timeout=30.0,
         )
         resp.raise_for_status()
 

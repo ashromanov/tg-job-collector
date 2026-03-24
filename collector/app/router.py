@@ -13,6 +13,7 @@ class MonitorUpdate(BaseModel):
 class SendDMRequest(BaseModel):
     contact: str
     message: str
+    file_path: str | None = None
 
 
 @router.get("/qr/start")
@@ -79,6 +80,8 @@ async def send_dm(body: SendDMRequest):
 
     try:
         await client.send_message(body.contact, body.message)
+        if body.file_path:
+            await client.send_file(body.contact, body.file_path)
         return {"sent": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

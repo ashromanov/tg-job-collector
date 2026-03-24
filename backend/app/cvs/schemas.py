@@ -14,6 +14,8 @@ class CVRead(BaseModel):
     name: str
     match_threshold: int | None = None
     active: bool | None = None
+    cv_link: str | None = None
+    file_path: str | None = None
     created_at: datetime | None = None
 
     model_config = {"from_attributes": True}
@@ -23,3 +25,4 @@ class CVUpdate(BaseModel):
     name: str | None = None
     match_threshold: int | None = None
     active: bool | None = None
+    cv_link: str | None = None
