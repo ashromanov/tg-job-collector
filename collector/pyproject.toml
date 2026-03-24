@@ -1,0 +1,18 @@
+[project]
+name = "tg-job-collector-collector"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "telethon>=1.38.0",
+    "httpx>=0.28.0",
+    "qrcode[pil]>=8.0.0",
+    "Pillow>=11.0.0",
+    "pydantic-settings>=2.7.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.7",
+]

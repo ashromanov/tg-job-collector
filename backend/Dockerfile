@@ -1,0 +1,11 @@
+FROM python:3.12-slim AS base
+WORKDIR /app
+RUN pip install uv
+COPY pyproject.toml .
+RUN uv sync --no-dev
+
+FROM base AS production
+COPY app/ app/
+COPY alembic.ini .
+COPY alembic/ alembic/
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
