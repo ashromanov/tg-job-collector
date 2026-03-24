@@ -8,6 +8,7 @@ from enum import Enum
 
 import qrcode
 from telethon import TelegramClient
+from telethon.errors import AuthTokenExpiredError, AuthTokenInvalidError
 from telethon.sessions import SQLiteSession
 
 from app.config import settings
@@ -96,7 +97,7 @@ async def _wait_for_scan(c: TelegramClient, qr_login) -> None:
 
             register_handler(c)
             return
-        except asyncio.TimeoutError:
+        except (asyncio.TimeoutError, AuthTokenExpiredError, AuthTokenInvalidError):
             # QR expired — recreate
             try:
                 await qr_login.recreate()

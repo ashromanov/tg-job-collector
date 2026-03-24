@@ -11,7 +11,7 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.get("/", response_model=list[ChannelRead])
+@router.get("", response_model=list[ChannelRead])
 async def read_channels(
     db: AsyncSession = Depends(get_db),
     _: User = Depends(get_current_user),

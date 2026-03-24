@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException, status
 from sqlalchemy import select
@@ -40,9 +40,9 @@ async def ingest(
     )
 
     try:
-        post_date = datetime.fromisoformat(payload.post_date)
+        post_date = datetime.fromisoformat(payload.post_date).replace(tzinfo=None)
     except ValueError:
-        post_date = datetime.now(timezone.utc)
+        post_date = datetime.utcnow()
 
     job = await create_job(
         db,

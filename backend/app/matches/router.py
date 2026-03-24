@@ -15,7 +15,7 @@ from app.matches.service import get_match, list_matches
 router = APIRouter()
 
 
-@router.get("/", response_model=list[MatchRead])
+@router.get("", response_model=list[MatchRead])
 async def read_matches(
     cv_id: uuid.UUID | None = Query(None),
     min_score: int | None = Query(None, ge=0, le=100),

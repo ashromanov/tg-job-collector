@@ -10,7 +10,7 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=CVRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=CVRead, status_code=status.HTTP_201_CREATED)
 async def upload_cv(
     file: UploadFile = File(...),
     name: str = Form(...),
@@ -39,7 +39,7 @@ async def upload_cv(
     )
 
 
-@router.get("/", response_model=list[CVRead])
+@router.get("", response_model=list[CVRead])
 async def get_cvs(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),

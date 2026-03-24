@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
-import { setToken } from "../lib/auth";
+import { useAuth } from "../hooks/useAuth";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -9,6 +9,7 @@ export function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginWithToken } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,8 +17,8 @@ export function Login() {
     setLoading(true);
     try {
       const res = await login(username, password);
-      setToken(res.data.access_token);
-      navigate("/onboarding");
+      loginWithToken(res.data.access_token);
+      navigate("/");
     } catch {
       setError("Invalid credentials");
     } finally {

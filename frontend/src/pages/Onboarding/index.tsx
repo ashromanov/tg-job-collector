@@ -1,20 +1,25 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { updateSettings } from "../../api/settings";
+import { useAuth } from "../../hooks/useAuth";
 import { StepChannels } from "./StepChannels";
 import { StepCVs } from "./StepCVs";
 import { StepPrompts } from "./StepPrompts";
 import { StepQR } from "./StepQR";
 
-const STEPS = ["Telegram Auth", "Upload CVs", "Validate Prompts", "Select Channels"];
+const STEPS = [
+  "Telegram Auth",
+  "Upload CVs",
+  "Validate Prompts",
+  "Select Channels",
+];
 
 export function Onboarding() {
   const [step, setStep] = useState(0);
-  const navigate = useNavigate();
+  const { setOnboardingComplete } = useAuth();
 
   async function finish() {
     await updateSettings({ onboarding_complete: true });
-    navigate("/jobs");
+    setOnboardingComplete(true);
   }
 
   return (

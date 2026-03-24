@@ -14,7 +14,7 @@ from app.outreach.service import list_outreach
 router = APIRouter()
 
 
-@router.get("/", response_model=list[OutreachLogRead])
+@router.get("", response_model=list[OutreachLogRead])
 async def read_outreach(
     outreach_status: str | None = Query(None, alias="status"),
     limit: int = Query(50, ge=1, le=200),

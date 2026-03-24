@@ -23,7 +23,7 @@ from app.settings.service import (
 router = APIRouter()
 
 
-@router.get("/", response_model=AppSettingsRead)
+@router.get("", response_model=AppSettingsRead)
 async def read_settings(
     db: AsyncSession = Depends(get_db),
     _: User = Depends(get_current_user),
@@ -31,7 +31,7 @@ async def read_settings(
     return await get_settings(db)
 
 
-@router.put("/", response_model=AppSettingsRead)
+@router.put("", response_model=AppSettingsRead)
 async def write_settings(
     body: AppSettingsUpdate,
     db: AsyncSession = Depends(get_db),

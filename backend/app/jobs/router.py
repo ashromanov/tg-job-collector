@@ -12,7 +12,7 @@ from app.jobs.service import get_job, list_jobs
 router = APIRouter()
 
 
-@router.get("/", response_model=list[JobRead])
+@router.get("", response_model=list[JobRead])
 async def read_jobs(
     channel_id: uuid.UUID | None = Query(None),
     extraction_status: str | None = Query(None),
