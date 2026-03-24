@@ -9,7 +9,7 @@ from app.auth.models import User
 from app.config import settings
 from app.database import AsyncSessionFactory
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt_sha256", "bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 1 week
 
